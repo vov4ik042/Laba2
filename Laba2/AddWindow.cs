@@ -19,7 +19,9 @@ namespace Laba2
             dataGridView1.Columns["NumberOfProducts"].Visible = false;
         }
 
-        private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        public AddWindow(int yes) { }
+
+        private void dataGridView1_RowHeaderMouseClick_1(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
@@ -27,12 +29,6 @@ namespace Laba2
                 AmountWindow howManyThings = new AmountWindow(selectedRow);
                 howManyThings.ShowDialog();
             }
-        }
-
-        private void AddWindow_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            MainView mainView = new MainView(1);
-            mainView.Show();
         }
     }
 }

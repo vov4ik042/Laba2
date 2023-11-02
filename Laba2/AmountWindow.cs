@@ -10,7 +10,7 @@ namespace Laba2
         private int ArticleOfProduct { get; set; }
         private double PriceOfProduct { get; set; }
         private string TypeOfProduct { get; set; }
-        private double AmountOfThings { get; set; }
+        private int AmountOfThings { get; set; }
         private double _operation { get; set; }
         private bool CountForNewAmount { get; set; }
         public AmountWindow(DataGridViewRow selectedRow)
@@ -42,7 +42,7 @@ namespace Laba2
 
         private void button3_Click(object sender, EventArgs e)
         {
-            AmountOfThings = double.Parse(comboBox1.Text);
+            AmountOfThings = int.Parse(comboBox1.Text);
             CountForNewAmount = false;
             if (AmountOfThings != default)
             {
@@ -59,7 +59,8 @@ namespace Laba2
                 if (CountForNewAmount != true)
                     Products.ProductsListClient.Add(new Products(NameOfProduct, ArticleOfProduct, PriceOfProduct, TypeOfProduct, AmountOfThings));
             }
-            this.Close();
+            MainView.MainUpdateView = true;
+            this.Close(); 
         }
     }
 }

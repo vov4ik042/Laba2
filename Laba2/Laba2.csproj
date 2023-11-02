@@ -58,6 +58,12 @@
     <Compile Include="AmountWindow.Designer.cs">
       <DependentUpon>AmountWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="EntryWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EntryWindow.Designer.cs">
+      <DependentUpon>EntryWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +80,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AmountWindow.resx">
       <DependentUpon>AmountWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EntryWindow.resx">
+      <DependentUpon>EntryWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>

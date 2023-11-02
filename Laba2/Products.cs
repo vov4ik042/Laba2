@@ -11,11 +11,12 @@ namespace Laba2
         public string NameOfProduct { get; set; }
         public int ArticleOfProduct { get; set; }
         public double PriceOfProduct { get; set; }
-        public double NumberOfProducts { get; set; }
+        public int NumberOfProducts { get; set; }
         public string TypeOfProduct { get; set; }
 
         public List<Products> ProductsListBase = new List<Products>();
         public static List<Products> ProductsListClient = new List<Products>();
+
         public Products()
         {
 
@@ -26,7 +27,7 @@ namespace Laba2
             InitializeListOfProducts();
         }
 
-        public Products(string name, int article, double price, string type, double amount = default) 
+        public Products(string name, int article, double price, string type, int amount = default) 
         {
             NameOfProduct = name;
             ArticleOfProduct = article;
