@@ -32,7 +32,7 @@ namespace Laba2
         private void AddWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainView mainView = new MainView(1);
-            //mainView.Invalidate();
+            mainView.Show();
         }
     }
 }

@@ -26,20 +26,29 @@ namespace Laba2
         public MainView()
         {
             InitializeComponent();
+            Products products = new Products(1);
+            _bs = new BindingSource();
+            _bs.DataSource = products.ProductsListBase;
+            _bs.ResetBindings(true);
+            Font myFont = new Font("Arial", 12, FontStyle.Regular);
+            dataGridView1.DefaultCellStyle.Font = myFont;
+            dataGridView1.DataSource = _bs;
         }
 
         public MainView(int example)
         {
             if (Products.ProductsListClient.Count > 0)
             {
+                Products products = new Products();
                 InitializeComponent();
+                dataGridView1.Enabled = true;
+                dataGridView1.Visible = true;
                 _bs = new BindingSource();
-                _bs.DataSource = Products.ProductsListClient;
+                _bs.DataSource = products.ProductsListBase;
                 _bs.ResetBindings(true);
                 Font myFont = new Font("Arial", 12, FontStyle.Regular);
                 dataGridView1.DefaultCellStyle.Font = myFont;
                 dataGridView1.DataSource = _bs;
-                dataGridView1.Invalidate();
             }
         }
 
@@ -49,7 +58,6 @@ namespace Laba2
             timer.Interval = 100;
             timer.Tick += Timer_Tick;
             timer.Start();
-
         }
 
         private void Timer_Tick(object sender, EventArgs e)
