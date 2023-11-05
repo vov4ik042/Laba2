@@ -12,20 +12,24 @@ namespace Laba2
         private int AmountOfThings { get; set; }
         private double SumPay { get; set; }
         private int selectedRowIndex { get; set; }
+        private static bool Online { get; set; }
 
-        //private string AdressOfLocation = "St. New Yorker 41";
         private DateTime date;
-        public bool PossiblePaymentCard { get; set; }
-        public bool PossibleOnlineBuying { get; set; }
-        public bool PossibleOnlineBuyingAndCourier { get; set; }
-        public bool PossibleOnlineBuyingAndCourierCASH { get; set; }
-        public bool AdressOfLocation { get; set; }
+        private bool PossibleCardPay { get; set; }
+        private static bool OperationPayWasClosed { get; set; }
+        private int AverageWholesaleOrRetail { get; set; }
+        private int CountWholesaleOrRetail { get; set; }
 
         private bool[] mas = new bool[1];
 
-        public MainView(int yes)
+        public MainView(double ConstTotalSum, bool WasClosed)
         {
-
+            SumPay = ConstTotalSum;
+            OperationPayWasClosed = WasClosed;
+        }
+        public void OnlineUpdateValue(bool online)
+        {
+            Online = online;
         }
 
         public MainView()
@@ -62,11 +66,14 @@ namespace Laba2
 
         private void MainView_Activated(object sender, EventArgs e)
         {
-            for (int i = 0; i < Products.ProductsListClient.Count; i++)
+            if (OperationPayWasClosed != true)
             {
-                PriceForThing = Products.ProductsListClient[i].PriceOfProduct;
-                AmountOfThings = Products.ProductsListClient[i].NumberOfProducts;
-                SumPay += PriceForThing * AmountOfThings;
+                for (int i = 0; i < Products.ProductsListClient.Count; i++)
+                {
+                    PriceForThing = Products.ProductsListClient[i].PriceOfProduct;
+                    AmountOfThings = Products.ProductsListClient[i].NumberOfProducts;
+                    SumPay += PriceForThing * AmountOfThings;
+                }
             }
             label3.Text = $"{SumPay} UAH";
             if (MainUpdateView == true)
@@ -86,7 +93,7 @@ namespace Laba2
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (selectedRowIndex >= 0)
+            if (selectedRowIndex >= 0 && Products.ProductsListClient.Count > 0)
             {
                 SumPay -= Products.ProductsListClient[selectedRowIndex].NumberOfProducts * Products.ProductsListClient[selectedRowIndex].PriceOfProduct;
                 Products.ProductsListClient.RemoveAt(selectedRowIndex);
@@ -106,14 +113,38 @@ namespace Laba2
 
         private void button3_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Are you sure to delete all?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-            if (result == DialogResult.OK)
+            if (Products.ProductsListClient.Count > 0)
             {
-                SumPay = 0;
-                Products.ProductsListClient.Clear();
-                MainUpdateView = true;
-                MainView_Activated(sender, e);
+                DialogResult result = MessageBox.Show("Are you sure to delete all?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (result == DialogResult.OK)
+                {
+                    SumPay = 0;
+                    Products.ProductsListClient.Clear();
+                    MainUpdateView = true;
+                    MainView_Activated(sender, e);
+                }
             }
+            else
+                MessageBox.Show("Please, add your products", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            PossibleCardPay = true;
+            if (Products.ProductsListClient.Count > 0)
+            {
+                for (int i = 0; i < Products.ProductsListClient.Count; i++)
+                {
+                    AverageWholesaleOrRetail += Products.ProductsListClient[i].NumberOfProducts;
+                    CountWholesaleOrRetail++;
+                }
+                OperationPay operationpay = new OperationPay();
+                operationpay.Show();
+                operationpay.InitializeForm(PossibleCardPay, AverageWholesaleOrRetail / CountWholesaleOrRetail, SumPay, Online);
+                this.Hide();
+            }
+            else
+                MessageBox.Show("Please, add your products", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
