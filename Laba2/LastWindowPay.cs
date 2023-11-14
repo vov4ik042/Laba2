@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Laba2EnableOrDisable;
 
 namespace Laba2
 {
@@ -11,17 +12,17 @@ namespace Laba2
         private bool LoyalCardWasUsed { get; set; }
         private double TotalSum { get; set; }
         private string DeliveryAddress { get; set; }
+        private static Guid CasaID { get; set; }
+        private static string NameOfCasa { get; set; }
         public LastWindowPay()
         {
             InitializeComponent();
         }
-        private void EnableAndVisible(bool enable, bool visible, params Control[] control)
+
+        public LastWindowPay(Guid id, string name)
         {
-            for (int i = 0; i < control.Length; i++)
-            {
-                control[i].Enabled = enable;
-                control[i].Visible = visible;
-            }
+            CasaID = id;
+            NameOfCasa = name;
         }
         public void GettingInformation(byte WhatTypeOperation, double TotalSum, double AverageAmountThings, bool DeliveryWasUsed, bool LoyalCardWasUsed)
         {
@@ -34,9 +35,9 @@ namespace Laba2
             {
                 case 1:
                     {
-                        EnableAndVisible(true, true, label3, label5, textBox2, button1, label11, label12, label1, label2, label4);
+                        EnableOrDisable.EnableAndVisible(true, true, label3, label5, textBox2, button1, label11, label12, label1, label2, label4);
                         label2.Text = $"{TotalSum.ToString()} UAH";
-                        if (DeliveryWasUsed == true) EnableAndVisible(true, true, label6, textBox1);
+                        if (DeliveryWasUsed == true) EnableOrDisable.EnableAndVisible(true, true, label6, textBox1);
                         if (DeliveryWasUsed == false)
                         {
                             label5.Location = new System.Drawing.Point(16, 160);
@@ -47,16 +48,16 @@ namespace Laba2
                     }
                 case 2:
                     {
-                        EnableAndVisible(true, true, label3, button2, label11, label12, label1, label2, label4);
+                        EnableOrDisable.EnableAndVisible(true, true, label3, button2, label11, label12, label1, label2, label4);
                         label2.Text = $"{TotalSum.ToString()} UAH";
                         label3.Text = "Card";
-                        if (DeliveryWasUsed == true) EnableAndVisible(true, true, label6, textBox1);
+                        if (DeliveryWasUsed == true) EnableOrDisable.EnableAndVisible(true, true, label6, textBox1);
                         break;
                     }
                 case 3:
                     {
                         label2.Text = $"{TotalSum.ToString()} UAH";
-                        EnableAndVisible(true, true, label3, button1, label11, label12, label1, label2, label4, label5, textBox2, label6, textBox1);
+                        EnableOrDisable.EnableAndVisible(true, true, label3, button1, label11, label12, label1, label2, label4, label5, textBox2, label6, textBox1);
                         label3.Text = "Cash";
                         label11.Text = "Online";
                         break;
@@ -80,12 +81,13 @@ namespace Laba2
                             {
                                 if (ClientCash - TotalSum >= 0)
                                 {
-                                    EnableAndVisible(true, true, label8, label9, label10);
+                                    EnableOrDisable.EnableAndVisible(true, true, label8, label9, label10);
                                     label9.Text = $"{(ClientCash - TotalSum).ToString()} UAH";
                                     DeliveryAddress = textBox1.Text;
                                     structers.CreateStruct(Products.ProductsListClient, TotalSum, ClientCash, ClientCash - TotalSum, LoyalCardWasUsed, DeliveryWasUsed);
                                     Transactions transactions = new Transactions();
-                                    transactions.AddTransaction(Guid.NewGuid(), DateTime.Now, TotalSum, "Offline", "Cash", LoyalCardWasUsed, DeliveryWasUsed);
+                                    transactions.AddTransaction(CasaID, Guid.NewGuid(), NameOfCasa, DateTime.Now, TotalSum, "Offline", "Cash", LoyalCardWasUsed, DeliveryWasUsed);
+                                    transactions.WriteTransactionsIntoFile();
                                     DialogResult dialogResult = MessageBox.Show("Success", "Congratulations", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     if (dialogResult == DialogResult.OK)
                                         Application.Exit();
@@ -107,12 +109,13 @@ namespace Laba2
                         {
                             if (ClientCash - TotalSum >= 0)
                             {
-                                EnableAndVisible(true, true, label8, label9, label10);
+                                EnableOrDisable.EnableAndVisible(true, true, label8, label9, label10);
                                 label9.Text = $"{(ClientCash - TotalSum).ToString()} UAH";
                                 DeliveryAddress = textBox1.Text;
                                 structers.CreateStruct(Products.ProductsListClient, TotalSum, ClientCash, ClientCash - TotalSum, LoyalCardWasUsed, DeliveryWasUsed);
                                 Transactions transactions = new Transactions();
-                                transactions.AddTransaction(Guid.NewGuid(), DateTime.Now, TotalSum, "Offline", "Cash", LoyalCardWasUsed, DeliveryWasUsed);
+                                transactions.AddTransaction(CasaID, Guid.NewGuid(), NameOfCasa, DateTime.Now, TotalSum, "Offline", "Cash", LoyalCardWasUsed, DeliveryWasUsed);
+                                transactions.WriteTransactionsIntoFile();
                                 DialogResult dialogResult = MessageBox.Show("Success", "Congratulations", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 if (dialogResult == DialogResult.OK)
                                     Application.Exit();
@@ -137,12 +140,13 @@ namespace Laba2
                         {
                             if (ClientCash - TotalSum >= 0)
                             {
-                                EnableAndVisible(true, true, label8, label9, label10);
+                                EnableOrDisable.EnableAndVisible(true, true, label8, label9, label10);
                                 label9.Text = $"{(ClientCash - TotalSum).ToString()} UAH";
                                 DeliveryAddress = textBox1.Text;
                                 structers.CreateStruct(Products.ProductsListClient, TotalSum, ClientCash, ClientCash - TotalSum, CostDelivery);
                                 Transactions transactions = new Transactions();
-                                transactions.AddTransaction(Guid.NewGuid(), DateTime.Now, TotalSum, "Offline", "Cash", LoyalCardWasUsed, DeliveryWasUsed);
+                                transactions.AddTransaction(CasaID, Guid.NewGuid(), "-", DateTime.Now, TotalSum, "Online", "Cash", LoyalCardWasUsed, DeliveryWasUsed);
+                                transactions.WriteTransactionsIntoFile();
                                 DialogResult dialogResult = MessageBox.Show("Success", "Congratulations", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 if (dialogResult == DialogResult.OK)
                                     Application.Exit();
@@ -166,11 +170,12 @@ namespace Laba2
                 {
                     if (textBox1.Text.Length > 4)
                     {
-                        EnableAndVisible(true, true, label10);
+                        EnableOrDisable.EnableAndVisible(true, true, label10);
                         DeliveryAddress = textBox1.Text;
                         structers.CreateStruct(Products.ProductsListClient, TotalSum, LoyalCardWasUsed, DeliveryWasUsed);
                         Transactions transactions = new Transactions();
-                        transactions.AddTransaction(Guid.NewGuid(), DateTime.Now, TotalSum, "Offline", "Cash", LoyalCardWasUsed, DeliveryWasUsed);
+                        transactions.AddTransaction(CasaID, Guid.NewGuid(), NameOfCasa, DateTime.Now, TotalSum, "Offline", "Card", LoyalCardWasUsed, DeliveryWasUsed);
+                        transactions.WriteTransactionsIntoFile();
                         DialogResult dialogResult = MessageBox.Show("Success", "Congratulations", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         if (dialogResult == DialogResult.OK)
                             Application.Exit();
@@ -179,11 +184,12 @@ namespace Laba2
                 }
                 else
                 {
-                    EnableAndVisible(true, true, label10);
+                    EnableOrDisable.EnableAndVisible(true, true, label10);
                     DeliveryAddress = textBox1.Text;
                     structers.CreateStruct(Products.ProductsListClient, TotalSum, LoyalCardWasUsed, DeliveryWasUsed);
                     Transactions transactions = new Transactions();
-                    transactions.AddTransaction(Guid.NewGuid(), DateTime.Now, TotalSum, "Offline", "Cash", LoyalCardWasUsed, DeliveryWasUsed);
+                    transactions.AddTransaction(CasaID, Guid.NewGuid(), NameOfCasa, DateTime.Now, TotalSum, "Offline", "Card", LoyalCardWasUsed, DeliveryWasUsed);
+                    transactions.WriteTransactionsIntoFile();
                     DialogResult dialogResult = MessageBox.Show("Success", "Congratulations", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.OK)
                         Application.Exit();

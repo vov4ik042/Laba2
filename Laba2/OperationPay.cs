@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using Laba2EnableOrDisable;
 
 namespace Laba2
 {
@@ -21,16 +22,6 @@ namespace Laba2
         {
             InitializeComponent();
         }
-
-        private void EnableAndVisible(bool enable, bool visible, params Control[] control)
-        {
-            for (int i = 0; i < control.Length; i++)
-            {
-                control[i].Enabled = enable;
-                control[i].Visible = visible;
-            }
-        }
-
         public void InitializeForm(bool PossibleCardPay, double AverageAmountThings, double SumPay, bool online)
         {
             this.AverageAmountThings = AverageAmountThings;
@@ -46,40 +37,40 @@ namespace Laba2
             {
                 if (AverageAmountThings >= 50) label1.Text = "Available payment methods(Wholesale)";
                 else label1.Text = "Available payment methods(Retail)";
-                EnableAndVisible(true, true, radioButton3);
-                EnableAndVisible(false, false, radioButton1, radioButton2, radioButton4, radioButton5, label5, label2, button2, comboBox1);
+                EnableOrDisable.EnableAndVisible(true, true, radioButton3);
+                EnableOrDisable.EnableAndVisible(false, false, radioButton1, radioButton2, radioButton4, radioButton5, label5, label2, button2, comboBox1);
             }
             else
             {
                 if (AverageAmountThings >= 30) label1.Text = "Available payment methods(Wholesale)";
                 else label1.Text = "Available payment methods(Retail)";
-                if (PossibleCardPay == true) EnableAndVisible(true, true, radioButton2);
-                EnableAndVisible(true, true, radioButton1);
-                EnableAndVisible(false, false, radioButton3, radioButton4, radioButton5, label5, label2, button2, comboBox1);
+                if (PossibleCardPay == true) EnableOrDisable.EnableAndVisible(true, true, radioButton2);
+                EnableOrDisable.EnableAndVisible(true, true, radioButton1);
+                EnableOrDisable.EnableAndVisible(false, false, radioButton3, radioButton4, radioButton5, label5, label2, button2, comboBox1);
             }
         }
 
         private void radioButton1_Click(object sender, System.EventArgs e)//Cash payment in store
         {
             Radiobutton1Clicked = true;
-            EnableAndVisible(false, true, radioButton2);
-            EnableAndVisible(true, true, radioButton4, radioButton5, label5, label7, label8, label9, label11);
-            if (LoyalCardWasUsed != true) EnableAndVisible(true, true, label2, comboBox1, button2);
+            EnableOrDisable.EnableAndVisible(false, true, radioButton2);
+            EnableOrDisable.EnableAndVisible(true, true, radioButton4, radioButton5, label5, label7, label8, label9, label11);
+            if (LoyalCardWasUsed != true) EnableOrDisable.EnableAndVisible(true, true, label2, comboBox1, button2);
         }
 
         private void radioButton2_Click(object sender, System.EventArgs e)//Card payment in store
         {
             Radiobutton2Clicked = true;
-            EnableAndVisible(false, true, radioButton1);
-            EnableAndVisible(true, true, radioButton4, radioButton5, label5, label7, label8, label9, label11);
-            if (LoyalCardWasUsed != true) EnableAndVisible(true, true, label2, comboBox1, button2);
+            EnableOrDisable.EnableAndVisible(false, true, radioButton1);
+            EnableOrDisable.EnableAndVisible(true, true, radioButton4, radioButton5, label5, label7, label8, label9, label11);
+            if (LoyalCardWasUsed != true) EnableOrDisable.EnableAndVisible(true, true, label2, comboBox1, button2);
         }
 
         private void radioButton3_Click(object sender, System.EventArgs e)//Payment in cash to the courier
         {
             Radiobutton3Clicked = true;
-            EnableAndVisible(true, true, label7, label8, label9, label11);
-            EnableAndVisible(false, false, label2, comboBox1, button2, radioButton4, radioButton5, label5);
+            EnableOrDisable.EnableAndVisible(true, true, label7, label8, label9, label11);
+            EnableOrDisable.EnableAndVisible(false, false, label2, comboBox1, button2, radioButton4, radioButton5, label5);
             if (AverageAmountThings < 50)
             {
                 DeliveryWasUsed = false;
@@ -127,8 +118,8 @@ namespace Laba2
                     }
                     label8.Text = $"{CardDiscount.ToString()} UAH";
                     label4.Text = $"{TotalSum.ToString()} UAH";
-                    EnableAndVisible(false, false, button2);
-                    EnableAndVisible(false, true, comboBox1);
+                    EnableOrDisable.EnableAndVisible(false, false, button2);
+                    EnableOrDisable.EnableAndVisible(false, true, comboBox1);
                 }
                 else
                 {

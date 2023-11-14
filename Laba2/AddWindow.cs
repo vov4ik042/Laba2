@@ -8,10 +8,9 @@ namespace Laba2
         private BindingSource _bs;
         public AddWindow()
         {
-            Products products = new Products(1);
             InitializeComponent();
             _bs = new BindingSource();
-            _bs.DataSource = products.ProductsListBase;
+            _bs.DataSource = Products.ProductsListBase;
             _bs.ResetBindings(true);
             Font myFont = new Font("Arial", 12, FontStyle.Regular);
             dataGridView1.DefaultCellStyle.Font = myFont;

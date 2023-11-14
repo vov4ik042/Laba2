@@ -14,7 +14,7 @@ namespace Laba2
         public int NumberOfProducts { get; set; }
         public string TypeOfProduct { get; set; }
 
-        public List<Products> ProductsListBase = new List<Products>();
+        public static List<Products> ProductsListBase = new List<Products>();
         public static List<Products> ProductsListClient = new List<Products>();
 
         public Products()
@@ -27,13 +27,13 @@ namespace Laba2
             InitializeListOfProducts();
         }
 
-        public Products(string name, int article, double price, string type, int amount = default) 
+        public Products(string name, int article, double price, string type, int amount = default)
         {
             NameOfProduct = name;
             ArticleOfProduct = article;
             PriceOfProduct = price;
             TypeOfProduct = type;
-            if(amount != default) NumberOfProducts = amount;
+            if (amount != default) NumberOfProducts = amount;
         }
 
         private void InitializeListOfProducts()

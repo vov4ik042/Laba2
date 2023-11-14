@@ -20,7 +20,7 @@ namespace Laba2
         private int AverageWholesaleOrRetail { get; set; }
         private int CountWholesaleOrRetail { get; set; }
 
-        private bool[] mas = new bool[1];
+        private bool MainViewFormClosingBool { get; set; }
 
         public MainView(double ConstTotalSum, bool WasClosed)
         {
@@ -78,7 +78,7 @@ namespace Laba2
             label3.Text = $"{SumPay} UAH";
             if (MainUpdateView == true)
             {
-                mas[0] = MainUpdateView;
+                MainViewFormClosingBool = true;
                 EntryWindow entryWindow = new EntryWindow(1);
                 entryWindow.UpdateBasket();
                 this.Close();
@@ -87,7 +87,7 @@ namespace Laba2
 
         private void MainView_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (mas[0] == false)
+            if (MainViewFormClosingBool != true)
                 Application.Exit();
         }
 
